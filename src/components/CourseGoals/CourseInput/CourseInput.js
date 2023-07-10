@@ -5,14 +5,20 @@ import "./CourseInput.css";
 
 const CourseInput = (props) => {
   const [enteredValue, setEnteredValue] = useState("");
+  const [isValid, setIsValid] = useState(true);
 
   const goalInputChangeHandler = (event) => {
+    if (event.target.value.trim() > 0) {
+      setIsValid(true);
+    }
+
     setEnteredValue(event.target.value);
   };
 
   const formSubmitHandler = (event) => {
     event.preventDefault();
     if (enteredValue.trim().length === 0) {
+      setIsValid(false);
       return;
     }
     props.onAddGoal(enteredValue);
@@ -21,11 +27,38 @@ const CourseInput = (props) => {
   return (
     <form onSubmit={formSubmitHandler}>
       <div className="form-control">
-        <label>Course Goal</label>
-        <input type="text" onChange={goalInputChangeHandler} />
+        <label
+          style={{
+            color: !isValid ? "brown" : "pink",
+          }}
+        >
+          Course Goal
+        </label>
+        <input
+          style={{
+            borderColor: !isValid ? "LAvender" : "brown",
+            backgroundColor: !isValid ? "Lavender" : "lightblue",
+          }}
+          type="text"
+          onChange={goalInputChangeHandler}
+        />
       </div>
       <Button type="submit">Add Goal</Button>
     </form>
+    // const [isClicked, afterClicked] = useState(true);
+
+    // const colorChangeHandler = () => {
+    //   afterClicked(false);
+    //   if (isClicked === false) {
+    //     afterClicked(true);
+    //   }
+    // };
+
+    // return (
+    //   <div>
+    //     <p style={{ color: !isClicked ? "red" : "blue" }}>Style me!</p>
+    //     <button onClick={colorChangeHandler}>Toggle style</button>
+    //   </div>
   );
 };
 
